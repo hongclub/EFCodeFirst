@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\GetBlogDataResult.cs" />
     <Compile Include="Migrations\202001242226301_InitialCreate.cs" />
     <Compile Include="Migrations\202001242226301_InitialCreate.Designer.cs">
       <DependentUpon>202001242226301_InitialCreate.cs</DependentUpon>
@@ -73,6 +74,9 @@
     <EmbeddedResource Include="Migrations\202001242313137_AddMyUrl.resx">
       <DependentUpon>202001242313137_AddMyUrl.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="db\sp_GetBlogData.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
