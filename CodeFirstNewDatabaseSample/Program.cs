@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,7 +38,8 @@ namespace CodeFirstNewDatabaseSample
             //}
 
 
-            CallGetBlogData();
+            //CallGetBlogData();
+            CallGetBlogDataThroughDBContext();
             Console.ReadKey();
         }
 
@@ -47,7 +49,15 @@ namespace CodeFirstNewDatabaseSample
 
             var db = new BloggingContext();
 
-            IList<GetBlogDataResult> empSummary = db.Database.SqlQuery<GetBlogDataResult>("GetBlogData").ToList();
+            IList<GetBlogDataResult> data = db.Database.SqlQuery<GetBlogDataResult>("GetBlogData").ToList();
+        }
+
+        public static void CallGetBlogDataThroughDBContext()
+        {
+
+            var db = new BloggingContext();
+
+            IList<GetBlogDataResult> data = db.GetBlogData().ToList();
         }
 
     }
@@ -75,10 +85,17 @@ namespace CodeFirstNewDatabaseSample
 
 
 
-    public class BloggingContext : DbContext
+    partial class BloggingContext : DbContext
     {
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<Post> Posts { get; set; }
+
+
+        public IList<GetBlogDataResult> GetBlogData()
+        {
+            IList<GetBlogDataResult> blogs = ((IObjectContextAdapter)this).ObjectContext.ExecuteStoreQuery<GetBlogDataResult>("GetBlogData").ToList<GetBlogDataResult>();
+            return blogs;
+        }
 
 
     }
